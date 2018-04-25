@@ -28,19 +28,12 @@ def standardize(X):
     """
 
     # YOUR CODE HERE:
-    X_trans = np.transpose(X)
-    X_out = np.ndarray(shape=np.shape(X_trans))
+    X_out = np.ndarray(shape=np.shape(X))
 
-    lines = np.shape(X_out)[0]
-    columns = np.shape(X_out)[1]
+    mean = np.mean(X, axis=0)
+    deviation = np.std(X, axis=0)
 
-    for i in range(0, lines):
-        mean = np.mean(X_trans[i])
-        deviation = np.std(X_trans[i])
-        for j in range (0, columns):
-            X_out[i][j] = (X_trans[i][j] - mean)/deviation
-
-    X_out = np.transpose(X_out)
+    X_out = (X - mean)/deviation
     # END YOUR CODE
 
     return X_out
@@ -88,11 +81,9 @@ def compute_wgrad(X, y, w):
     # YOUR CODE HERE:
     errors = np.dot(X, w) - y
 
-    dataset_size = np.shape(X)[0]
-
     X_trans = np.transpose(X)
     grad = np.dot(X_trans, errors)
-    grad *= (2/dataset_size)
+    grad *= (2/np.shape(X)[0])
 
     # END YOUR CODE
 
